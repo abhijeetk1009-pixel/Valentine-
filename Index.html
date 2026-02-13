@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>For My Chummie ❤️</title>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body {
+            margin: 0; padding: 20px; min-height: 100vh;
+            background: linear-gradient(180deg, #fff0f3 0%, #ffccd5 100%);
+            font-family: 'Quicksand', sans-serif;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+        }
+        .container {
+            width: 100%; max-width: 400px; text-align: center; background: white;
+            padding: 35px 25px; border-radius: 40px; box-shadow: 0 20px 40px rgba(255, 77, 109, 0.2);
+        }
+        .heart-icon { font-size: 50px; margin-bottom: 15px; animation: beat 1s infinite alternate; }
+        @keyframes beat { to { transform: scale(1.1); } }
+        
+        h1 { font-family: 'Dancing Script', cursive; color: #ff4d6d; font-size: 2.2rem; margin: 10px 0; }
+        .message-text { color: #590d22; font-size: 1.1rem; line-height: 1.6; margin-bottom: 25px; font-style: italic; }
+        
+        /* The buttons */
+        .btn-stack { display: flex; flex-direction: column; gap: 15px; width: 100%; }
+        button {
+            width: 100%; padding: 18px; border: none; border-radius: 20px;
+            font-size: 1.1rem; font-weight: bold; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer; touch-action: manipulation;
+        }
+        #yesBtn { background: #ff4d6d; color: white; }
+        #noBtn { background: #f8f9fa; color: #ff4d6d; border: 2px solid #ff4d6d; }
+
+        /* Photos area - simplified for mobile */
+        .photo-placeholder {
+            width: 100px; height: 100px; background: #ffeef2;
+            border-radius: 50%; margin: 0 auto 20px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 40px; border: 3px solid #ff4d6d;
+        }
+
+        .success-screen { display: none; flex-direction: column; align-items: center; }
+        .date-chip { background: #ffecf1; padding: 10px 20px; border-radius: 15px; margin-top: 20px; color: #c9184a; }
+    </style>
+</head>
+<body>
+
+    <div class="container" id="mainCard">
+        <div class="photo-placeholder">📸</div>
+        <h1 id="title">Hey Chummie...</h1>
+        
+        <div class="message-text" id="storyText">
+            We’ve handled every up and down in life together gracefully.
+        </div>
+
+        <div class="btn-stack">
+            <button id="yesBtn">Keep Reading... ❤️</button>
+            <button id="noBtn" style="display:none;">No</button>
+        </div>
+    </div>
+
+    <div class="container success-screen" id="successScreen">
+        <div style="font-size: 60px;">👩‍❤️‍👨</div>
+        <h1>It's a Date!</h1>
+        <p>I love you, Chummie!</p>
+        <div class="date-chip">📅 February 14th, 2026</div>
+    </div>
+
+    <script>
+        const story = [
+            "You are the cutest person I have ever met... I just melt when I see your smile.",
+            "I love you more than words can say. You're my rock and my best friend.",
+            "So, I have one very important question to ask you..."
+        ];
+
+        let step = 0;
+        const yesBtn = document.getElementById('yesBtn');
+        const noBtn = document.getElementById('noBtn');
+        const storyText = document.getElementById('storyText');
+        const title = document.getElementById('title');
+        const mainCard = document.getElementById('mainCard');
+        const successScreen = document.getElementById('successScreen');
+
+        yesBtn.addEventListener('click', () => {
+            if (step < story.length) {
+                // Change the text to the next memory
+                storyText.style.opacity = 0;
+                setTimeout(() => {
+                    storyText.innerText = story[step];
+                    storyText.style.opacity = 1;
+                    
+                    if (step === story.length - 1) {
+                        yesBtn.innerText = "YES, I WILL! ❤️";
+                        noBtn.style.display = "block";
+                        title.innerText = "Will You Be My Valentine?";
+                    }
+                    step++;
+                }, 200);
+            } else {
+                // Final Success
+                showSuccess();
+            }
+        });
+
+        // The funny "No" logic
+        let noCount = 0;
+        noBtn.addEventListener('click', () => {
+            noCount++;
+            yesBtn.style.transform = `scale(${1 + noCount * 0.2})`;
+            noBtn.innerText = ["Are you sure?", "Think again!", "Chummie please!", "Last chance!", "Just click yes 😜"][Math.min(noCount-1, 4)];
+        });
+
+        function showSuccess() {
+            mainCard.style.display = 'none';
+            successScreen.style.display = 'flex';
+            confetti({
+                particleCount: 150,
+                spread: 70,
+                origin: { y: 0.6 },
+                colors: ['#ff4d6d', '#ffffff', '#ffb3c1']
+            });
+        }
+    </script>
+</body>
+</html>
